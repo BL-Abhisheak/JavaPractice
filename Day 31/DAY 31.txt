@@ -1,0 +1,443 @@
+Microsoft Windows [Version 10.0.19045.6575]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.41 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+	
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+
+EMPLOYEE PAYROLL PROBLEM : 
+
+mysql> create database payroll_service;
+Query OK, 1 row affected (0.02 sec)
+
+mysql>  show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql>  show databases;
++--------------------+
+| Database           |
++--------------------+
+| batchprocessing    |
+| ecommerce          |
+| information_schema |
+| jdbcdb             |
+| joinspractice      |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sys                |
+| ticketmanagement   |
+| world              |
++--------------------+
+11 rows in set (0.05 sec)
+
+mysql> use payroll_service
+Database changed
+mysql> create table employee_payroll
+    -> create table employee_payroll;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'create table employee_payroll' at line 2
+mysql> create Table employee_payroll;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table employee_payroll(id INT NOT NULL, name VARCHAR(50) NOT NULL, salary DECIMAL(10,2) NOT NULL, start DATE NOT NULL, PRIMARY KEY(id));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> show tables;
++---------------------------+
+| Tables_in_payroll_service |
++---------------------------+
+| employee_payroll          |
++---------------------------+
+1 row in set (0.02 sec)
+
+mysql> insert into employee_payroll(id, name, salary,start) VALUES (1,'Peter','350000.00','27-08-2025');
+ERROR 1292 (22007): Incorrect date value: '27-08-2025' for column 'start' at row 1
+mysql> insert into employee_payroll(id, name, salary,start) VALUES (1,'Peter','350000.00','2025-12-13');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employee_payroll;
++----+-------+-----------+------------+
+| id | name  | salary    | start      |
++----+-------+-----------+------------+
+|  1 | Peter | 350000.00 | 2025-12-13 |
++----+-------+-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> select salary from employee_payroll where name = 'Peter';
++-----------+
+| salary    |
++-----------+
+| 350000.00 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select salary from employee_payroll where WHERE start BETWEEN CAST('2018-01-01'
+    -> AS DATE) AND DATE(NOW());
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE start BETWEEN CAST('2018-01-01'
+AS DATE) AND DATE(NOW())' at line 1
+mysql> select salary from employee_payroll WHERE start BETWEEN CAST('2018-01-01'
+    -> AS DATE) AND DATE(NOW());
+Empty set (0.00 sec)
+
+mysql> alter table employee_payroll add gender(char) after name ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(char) after name' at line 1
+mysql> alter table employee_payroll add gender char(1) after name       ;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+-------+--------+-----------+------------+
+| id | name  | gender | salary    | start      |
++----+-------+--------+-----------+------------+
+|  1 | Peter | NULL   | 350000.00 | 2025-12-13 |
++----+-------+--------+-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> update employee_payroll set gender = 'M' where name = 'Peter';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+-------+--------+-----------+------------+
+| id | name  | gender | salary    | start      |
++----+-------+--------+-----------+------------+
+|  1 | Peter | M      | 350000.00 | 2025-12-13 |
++----+-------+--------+-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> insert into employee_payroll(id, name, salary,start) VALUES (1,'Gwen','350000.00','2023-11-22');
+ERROR 1062 (23000): Duplicate entry '1' for key 'employee_payroll.PRIMARY'
+mysql> insert into employee_payroll(id, name, salary,start) VALUES (2,'Gwen','350000.00','2023-11-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into employee_payroll(id, name, salary,start) VALUES (3,'Otto','800000.00','2021-06-17');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee_payroll;
++----+-------+--------+-----------+------------+
+| id | name  | gender | salary    | start      |
++----+-------+--------+-----------+------------+
+|  1 | Peter | M      | 350000.00 | 2025-12-13 |
+|  2 | Gwen  | NULL   | 350000.00 | 2023-11-22 |
+|  3 | Otto  | NULL   | 800000.00 | 2021-06-17 |
++----+-------+--------+-----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set gender = 'F' where name = 'Gwen';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set gender = 'M' where name = 'Otto';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+-------+--------+-----------+------------+
+| id | name  | gender | salary    | start      |
++----+-------+--------+-----------+------------+
+|  1 | Peter | M      | 350000.00 | 2025-12-13 |
+|  2 | Gwen  | F      | 350000.00 | 2023-11-22 |
+|  3 | Otto  | M      | 800000.00 | 2021-06-17 |
++----+-------+--------+-----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select gender, SUM(salary) from employee_payroll group by gender;
++--------+-------------+
+| gender | SUM(salary) |
++--------+-------------+
+| M      |  1150000.00 |
+| F      |   350000.00 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select gender, AVG(salary) from employee_payroll group by gender;
++--------+---------------+
+| gender | AVG(salary)   |
++--------+---------------+
+| M      | 575000.000000 |
+| F      | 350000.000000 |
++--------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select gender, MIN(salary) from employee_payroll group by gender;
++--------+-------------+
+| gender | MIN(salary) |
++--------+-------------+
+| M      |   350000.00 |
+| F      |   350000.00 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+ADDRESSBOOK PROBLEM :
+
+
+Microsoft Windows [Version 10.0.19045.6575]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.41 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| batchprocessing    |
+| ecommerce          |
+| information_schema |
+| jdbcdb             |
+| joinspractice      |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sys                |
+| ticketmanagement   |
+| world              |
++--------------------+
+11 rows in set (0.01 sec)
+
+mysql> create database address_book_service
+    -> create database address_book_service;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'create database address_book_service' at line 2
+mysql> create database address_book_service;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create table employee_payroll(id INT NOT NULL AUTO INCREMENT, firstName VARCHAR(50) NOT NULL, last_name VARCHAR(50),address VARCHAR(100), city VARCHAR(20), state VARCHAR(20), zip INT, phone_number LONG, email VARCHAR(20), PRIMARY KEY(id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AUTO INCREMENT, firstName VARCHAR(50) NOT NULL, last_name VARCHAR(50),address VA' at line 1
+mysql> create table employee_payroll(id INT NOT NULL AUTO_INCREMENT, firstName VARCHAR(50) NOT NULL, last_name VARCHAR(50),address VARCHAR(100), city VARCHAR(20), state VARCHAR(20), zip INT, phone_number LONG, email VARCHAR(20), PRIMARY KEY(id));
+ERROR 1046 (3D000): No database selected
+mysql> use payroll_service
+Database changed
+mysql> create table employee_payroll(id INT NOT NULL AUTO_INCREMENT, firstName VARCHAR(50) NOT NULL, last_name VARCHAR(50),address VARCHAR(100), city VARCHAR(20), state VARCHAR(20), zip INT, phone_number LONG, email VARCHAR(20), PRIMARY KEY(id));
+ERROR 1050 (42S01): Table 'employee_payroll' already exists
+mysql> create table addressbook(id INT NOT NULL AUTO_INCREMENT, firstName VARCHAR(50) NOT NULL, last_name VARCHAR(50),address VARCHAR(100), city VARCHAR(20), state VARCHAR(20), zip INT, phone_number LONG, email VARCHAR(20), PRIMARY KEY(id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++---------------------------+
+| Tables_in_payroll_service |
++---------------------------+
+| addressbook               |
+| employee_payroll          |
++---------------------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into addressbook values (^CX^Z
+mysql> ^C
+mysql> insert into addressbook values ('Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234, 'eren1010@gmail.com');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into addressbook values ('Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234, 'eren1010@gmail.com');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into addressbook ('Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234, 'eren1010@gmail.com');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234' at line 1
+mysql> insert into addressbook (firstName, last_name, address, city, state, zip, phone_number,email) ('Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234, 'eren1010@gmail.com');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234' at line 1
+mysql> insert into addressbook (firstName, last_name, address, city, state, zip, phone_number,email) ('Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234, 'eren1010@gmail.com');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234' at line 1
+mysql> create table employee_payroll(id INT NOT NULL AUTO_INCREMENT, firstName VARCHAR(50) NOT NULL, last_name VARCHAR(50),address VARCHAR(100), city VARCHAR(20), state VARCHAR(20), zip INT, phone_number LONG, email VARCHAR(20), PRIMARY KEY(id));
+ERROR 1050 (42S01): Table 'employee_payroll' already exists
+mysql> drop table addressbook
+    -> drop table addressbook;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'drop table addressbook' at line 2
+mysql> DROP TABLE IF EXISTS addressbook;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++---------------------------+
+| Tables_in_payroll_service |
++---------------------------+
+| employee_payroll          |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE employee_payroll (    id INT NOT NULL AUTO_INCREMENT,    first_name VARCHAR(50) NOT NULL,    last_name VARCHAR(50),    address VARCHAR(100),    city VARCHAR(20),    state VARCHAR(20),    zip VARCHAR(10),    phone_number VARCHAR(20),    email VARCHAR(100),    PRIMARY KEY(id));
+ERROR 1050 (42S01): Table 'employee_payroll' already exists
+mysql> CREATE TABLE employee_payroll (    id INT NOT NULL AUTO_INCREMENT,    first_name VARCHAR(50) NOT NULL,    last_name VARCHAR(50),    address VARCHAR(100),    city VARCHAR(20),    state VARCHAR(20),    zip VARCHAR(10),    phone_number VARCHAR(20),    email VARCHAR(100),    PRIMARY KEY(id));
+ERROR 1050 (42S01): Table 'employee_payroll' already exists
+mysql> CREATE TABLE addressbook (    id INT NOT NULL AUTO_INCREMENT,    first_name VARCHAR(50) NOT NULL,    last_name VARCHAR(50),    address VARCHAR(100),    city VARCHAR(20),    state VARCHAR(20),    zip VARCHAR(10),    phone_number VARCHAR(20),    email VARCHAR(100),    PRIMARY KEY(id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into addressbook (firstName, last_name, address, city, state, zip, phone_number,email) ('Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234, 'eren1010@gmail.com');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Eren', 'Yeagar','Eldians', 'Paradise Island', 'World State', 636636, 9876543234' at line 1
+mysql> INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email)VALUES('Eren', 'Yeagar', 'Eldians', 'Paradise Island', 'World State', '636636', '9876543234', 'eren1010@gmail.com');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from addressbook;
++----+------------+-----------+---------+-----------------+-------------+--------+--------------+--------------------+
+| id | first_name | last_name | address | city            | state       | zip    | phone_number | email              |
++----+------------+-----------+---------+-----------------+-------------+--------+--------------+--------------------+
+|  1 | Eren       | Yeagar    | Eldians | Paradise Island | World State | 636636 | 9876543234   | eren1010@gmail.com |
++----+------------+-----------+---------+-----------------+-------------+--------+--------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from addressbook;
++----+------------+-----------+---------+-----------------+-------------+--------+--------------+--------------------+
+| id | first_name | last_name | address | city            | state       | zip    | phone_number | email              |
++----+------------+-----------+---------+-----------------+-------------+--------+--------------+--------------------+
+|  1 | Eren       | Yeagar    | Eldians | Paradise Island | World State | 636636 | 9876543234   | eren1010@gmail.com |
++----+------------+-----------+---------+-----------------+-------------+--------+--------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Eren', 'Yeager', 'Shiganshina District', 'Wall Maria', 'Eldia', '845001', '9876000001', 'eren.yeager@paradise.is');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Mikasa', 'Ackerman', 'Shiganshina District', 'Wall Maria', 'Eldia', '845002', '9876000002', 'mikasa.a@paradise.is');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Armin', 'Arlert', 'Shiganshina District', 'Wall Maria', 'Eldia', '845003', '9876000003', 'armin.arlert@paradise.is');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Levi', 'Ackerman', 'Underground City', 'Mitras', 'Eldia', '845100', '9876000004', 'levi@surveycorps.org');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Hange', 'Zoë', 'Scout HQ', 'Wall Rose', 'Eldia', '845200', '9876000005', 'hange.zoe@surveycorps.org');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Jean', 'Kirstein', 'Trost District', 'Wall Rose', 'Eldia', '845300', '9876000006', 'jean.k@paradise.is');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Connie', 'Springer', 'Ragako Village', 'Wall Rose', 'Eldia', '845400', '9876000007', 'connie.springer@paradise.is');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Sasha', 'Blouse', 'Dauper Village', 'Wall Rose', 'Eldia', '845500', '9876000008', 'sasha.b@paradise.is');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Historia', 'Reiss', 'Mitras Palace', 'Mitras', 'Eldia', '845600', '9876000009', 'historia.reiss@royalcrown.is');INSERT INTO addressbook (first_name, last_name, address, city, state, zip, phone_number, email) VALUES('Reiner', 'Braun', 'Liberio Internment Zone', 'Marley', 'Mid-East Continent', '845700', '9876000010', 'reiner.braun@warrior.mr');
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from addressbook;
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+------------------------------+
+| id | first_name | last_name | address                 | city            | state              | zip    | phone_number | email                        |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+------------------------------+
+|  1 | Eren       | Yeagar    | Eldians                 | Paradise Island | World State        | 636636 | 9876543234   | eren1010@gmail.com           |
+|  2 | Eren       | Yeager    | Shiganshina District    | Wall Maria      | Eldia              | 845001 | 9876000001   | eren.yeager@paradise.is      |
+|  3 | Mikasa     | Ackerman  | Shiganshina District    | Wall Maria      | Eldia              | 845002 | 9876000002   | mikasa.a@paradise.is         |
+|  4 | Armin      | Arlert    | Shiganshina District    | Wall Maria      | Eldia              | 845003 | 9876000003   | armin.arlert@paradise.is     |
+|  5 | Levi       | Ackerman  | Underground City        | Mitras          | Eldia              | 845100 | 9876000004   | levi@surveycorps.org         |
+|  6 | Hange      | Zoë       | Scout HQ                | Wall Rose       | Eldia              | 845200 | 9876000005   | hange.zoe@surveycorps.org    |
+|  7 | Jean       | Kirstein  | Trost District          | Wall Rose       | Eldia              | 845300 | 9876000006   | jean.k@paradise.is           |
+|  8 | Connie     | Springer  | Ragako Village          | Wall Rose       | Eldia              | 845400 | 9876000007   | connie.springer@paradise.is  |
+|  9 | Sasha      | Blouse    | Dauper Village          | Wall Rose       | Eldia              | 845500 | 9876000008   | sasha.b@paradise.is          |
+| 10 | Historia   | Reiss     | Mitras Palace           | Mitras          | Eldia              | 845600 | 9876000009   | historia.reiss@royalcrown.is |
+| 11 | Reiner     | Braun     | Liberio Internment Zone | Marley          | Mid-East Continent | 845700 | 9876000010   | reiner.braun@warrior.mr      |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+------------------------------+
+11 rows in set (0.00 sec)
+
+mysql> update addressbook set phone_number = 00000000000 where first_namer = 'Eren';
+ERROR 1054 (42S22): Unknown column 'first_namer' in 'where clause'
+mysql> update addressbook set phone_number = 00000000000 where first_name = 'Eren';
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from addressbiook
+    -> select * from addressbook;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from addressbook' at line 2
+mysql> select * from addressbook;
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+------------------------------+
+| id | first_name | last_name | address                 | city            | state              | zip    | phone_number | email                        |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+------------------------------+
+|  1 | Eren       | Yeagar    | Eldians                 | Paradise Island | World State        | 636636 | 0            | eren1010@gmail.com           |
+|  2 | Eren       | Yeager    | Shiganshina District    | Wall Maria      | Eldia              | 845001 | 0            | eren.yeager@paradise.is      |
+|  3 | Mikasa     | Ackerman  | Shiganshina District    | Wall Maria      | Eldia              | 845002 | 9876000002   | mikasa.a@paradise.is         |
+|  4 | Armin      | Arlert    | Shiganshina District    | Wall Maria      | Eldia              | 845003 | 9876000003   | armin.arlert@paradise.is     |
+|  5 | Levi       | Ackerman  | Underground City        | Mitras          | Eldia              | 845100 | 9876000004   | levi@surveycorps.org         |
+|  6 | Hange      | Zoë       | Scout HQ                | Wall Rose       | Eldia              | 845200 | 9876000005   | hange.zoe@surveycorps.org    |
+|  7 | Jean       | Kirstein  | Trost District          | Wall Rose       | Eldia              | 845300 | 9876000006   | jean.k@paradise.is           |
+|  8 | Connie     | Springer  | Ragako Village          | Wall Rose       | Eldia              | 845400 | 9876000007   | connie.springer@paradise.is  |
+|  9 | Sasha      | Blouse    | Dauper Village          | Wall Rose       | Eldia              | 845500 | 9876000008   | sasha.b@paradise.is          |
+| 10 | Historia   | Reiss     | Mitras Palace           | Mitras          | Eldia              | 845600 | 9876000009   | historia.reiss@royalcrown.is |
+| 11 | Reiner     | Braun     | Liberio Internment Zone | Marley          | Mid-East Continent | 845700 | 9876000010   | reiner.braun@warrior.mr      |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+------------------------------+
+11 rows in set (0.00 sec)
+
+mysql> delete from asddressbook where first_name = 'Historia';
+ERROR 1146 (42S02): Table 'payroll_service.asddressbook' doesn't exist
+mysql> delete from addressbook where first_name = 'Historia';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from addressbook;
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+-----------------------------+
+| id | first_name | last_name | address                 | city            | state              | zip    | phone_number | email                       |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+-----------------------------+
+|  1 | Eren       | Yeagar    | Eldians                 | Paradise Island | World State        | 636636 | 0            | eren1010@gmail.com          |
+|  2 | Eren       | Yeager    | Shiganshina District    | Wall Maria      | Eldia              | 845001 | 0            | eren.yeager@paradise.is     |
+|  3 | Mikasa     | Ackerman  | Shiganshina District    | Wall Maria      | Eldia              | 845002 | 9876000002   | mikasa.a@paradise.is        |
+|  4 | Armin      | Arlert    | Shiganshina District    | Wall Maria      | Eldia              | 845003 | 9876000003   | armin.arlert@paradise.is    |
+|  5 | Levi       | Ackerman  | Underground City        | Mitras          | Eldia              | 845100 | 9876000004   | levi@surveycorps.org        |
+|  6 | Hange      | Zoë       | Scout HQ                | Wall Rose       | Eldia              | 845200 | 9876000005   | hange.zoe@surveycorps.org   |
+|  7 | Jean       | Kirstein  | Trost District          | Wall Rose       | Eldia              | 845300 | 9876000006   | jean.k@paradise.is          |
+|  8 | Connie     | Springer  | Ragako Village          | Wall Rose       | Eldia              | 845400 | 9876000007   | connie.springer@paradise.is |
+|  9 | Sasha      | Blouse    | Dauper Village          | Wall Rose       | Eldia              | 845500 | 9876000008   | sasha.b@paradise.is         |
+| 11 | Reiner     | Braun     | Liberio Internment Zone | Marley          | Mid-East Continent | 845700 | 9876000010   | reiner.braun@warrior.mr     |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+-----------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from addressbook where city = 'Wall Rose';
++----+------------+-----------+----------------+-----------+-------+--------+--------------+-----------------------------+
+| id | first_name | last_name | address        | city      | state | zip    | phone_number | email                       |
++----+------------+-----------+----------------+-----------+-------+--------+--------------+-----------------------------+
+|  6 | Hange      | Zoë       | Scout HQ       | Wall Rose | Eldia | 845200 | 9876000005   | hange.zoe@surveycorps.org   |
+|  7 | Jean       | Kirstein  | Trost District | Wall Rose | Eldia | 845300 | 9876000006   | jean.k@paradise.is          |
+|  8 | Connie     | Springer  | Ragako Village | Wall Rose | Eldia | 845400 | 9876000007   | connie.springer@paradise.is |
+|  9 | Sasha      | Blouse    | Dauper Village | Wall Rose | Eldia | 845500 | 9876000008   | sasha.b@paradise.is         |
++----+------------+-----------+----------------+-----------+-------+--------+--------------+-----------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select city,COUNT(*) AS count from addressbook group by city;
++-----------------+-------+
+| city            | count |
++-----------------+-------+
+| Paradise Island |     1 |
+| Wall Maria      |     3 |
+| Mitras          |     1 |
+| Wall Rose       |     4 |
+| Marley          |     1 |
++-----------------+-------+
+5 rows in set (0.01 sec)
+
+mysql> select * from addressbook order by first_name , order by last_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by last_name' at line 1
+mysql> select * from addressbook order by first_name ASC, order by last_name ASC;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by last_name ASC' at line 1
+mysql> select * from addressbook order by first_name ASC, last_name ASC;
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+-----------------------------+
+| id | first_name | last_name | address                 | city            | state              | zip    | phone_number | email                       |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+-----------------------------+
+|  4 | Armin      | Arlert    | Shiganshina District    | Wall Maria      | Eldia              | 845003 | 9876000003   | armin.arlert@paradise.is    |
+|  8 | Connie     | Springer  | Ragako Village          | Wall Rose       | Eldia              | 845400 | 9876000007   | connie.springer@paradise.is |
+|  1 | Eren       | Yeagar    | Eldians                 | Paradise Island | World State        | 636636 | 0            | eren1010@gmail.com          |
+|  2 | Eren       | Yeager    | Shiganshina District    | Wall Maria      | Eldia              | 845001 | 0            | eren.yeager@paradise.is     |
+|  6 | Hange      | Zoë       | Scout HQ                | Wall Rose       | Eldia              | 845200 | 9876000005   | hange.zoe@surveycorps.org   |
+|  7 | Jean       | Kirstein  | Trost District          | Wall Rose       | Eldia              | 845300 | 9876000006   | jean.k@paradise.is          |
+|  5 | Levi       | Ackerman  | Underground City        | Mitras          | Eldia              | 845100 | 9876000004   | levi@surveycorps.org        |
+|  3 | Mikasa     | Ackerman  | Shiganshina District    | Wall Maria      | Eldia              | 845002 | 9876000002   | mikasa.a@paradise.is        |
+| 11 | Reiner     | Braun     | Liberio Internment Zone | Marley          | Mid-East Continent | 845700 | 9876000010   | reiner.braun@warrior.mr     |
+|  9 | Sasha      | Blouse    | Dauper Village          | Wall Rose       | Eldia              | 845500 | 9876000008   | sasha.b@paradise.is         |
++----+------------+-----------+-------------------------+-----------------+--------------------+--------+--------------+-----------------------------+
+10 rows in set (0.00 sec)
+
+mysql>
